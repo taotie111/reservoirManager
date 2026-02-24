@@ -1,20 +1,34 @@
-# agent-大坝在线安全监测软件平台.md
+# 大坝在线安全监测软件平台 - 核心大纲
 
-## 已完成
-- 专题场景展示的骨架与三维场景占位，能够直观展现坝基渗压、表面变形等监测成果的占位信息。
-- 基础信息管理：水库工程基础信息、工程文档、监测项目及测点信息的录入与管理（支持导入/导出）。
-- 安全监管业务流程：大坝安全“三个责任人”信息及履职记录、在线安全鉴定材料管理、维修养护记录、隐患排查标准化分类与闭环管理，以及运行年报的集中管理。
-- 整编分析功能：智能误差识别、数据特征统计、综合过程线、布置图、分布图、相关图等图形展示。
-- 在线监控预警与智能巡更：多级监控指标、报警推送、三维虚拟巡查路线与移动端打卡、隐患上报闭环。
-- 预测预报与会商响应：建立多种分析预测模型，管理模型因子，进行大坝安全性态的量化评估与动态预测；会商演练记录与预演成果、应急预案与滚动优化的关系。
+此文档聚焦实现层面的核心大纲，确保命名规范、坐标系以及模块化落地的一致性，作为后续需求草案、数据字典与 API 契约对齐的基线。
 
-## 待完成
-- 三维地形与监测数据的实时接入与直观可视化。
-- 预测/会商模型的量化评估、预案与演练结果的动态联动。
-- 多维度报表（日/周/月）自动生成与分发。
-- 应急预案的版本化管理、滚动优化与实际监测物理量的联动响应。
-- 与其他系统（如水文调度、应急资源）的一体化工作流。
+## 1) 目标与范围
+- 架构一个可落地的监测平台，覆盖数据接入、可视化、告警、巡检、会商、预案与跨系统对接的 MVP。
+- 坐标系统一为 CGCS2000，大地2000；地理字段采用 location: GEOMETRY(POINT, CGCS2000)。
 
-## 验证与落地建议
-- 将监测数据源对接到可视化组件，逐步替换占位组件为真实数据绑定的控件。
-- 验证报警规则、巡检路线、隐患闭环流程在真实场景中的有效性。
+## 2) 命名规范
+- 实体名：CamelCase（单数）如 Dam、MonitoringPoint、Sensor、Timeseries、Alarm、PatrolRoute、HazardRecord、RectificationTask、Model、Prediction、Plan、DrillRecord、Report、Document、UserRolePermission。
+- 端点集合名：Dam、MonitoringPoints 等复数形式，如 /dams、/monitoringPoints、/timeseries、/alarms、/patrolRoutes 等。
+- 字段名：camelCase，如 damId、monitoringPointId、location、designParameters、createdAt、updatedAt。
+- 地理字段：location: GEOMETRY(POINT, CGCS2000)。
+
+## 3) 坐标系
+- CGCS2000（大地2000）为统一的地理坐标系，全球适用，地理字段均使用该坐标系。
+
+## 4) 核心模块与数据流
+- Dam、MonitoringPoint、Sensor、Timeseries、Alarm、PatrolRoute、HazardRecord、RectificationTask、Model、Prediction、Plan、DrillRecord、Report、Document、UserRolePermission
+- 数据流简述：数据接入 → 建模/存储 → 可视化与告警 → 巡查/演练 → 预测/预案/跨系统对接
+
+## 5) MVP 路线
+- MVP1：核心数据模型骨架、/dams 与 /monitoringPoints 的增删改查、Timeseries 入库占位、初版 JWT/RBAC、3D 场景占位
+- MVP2：3D 数据绑定、告警面板、巡查路线、报表样例
+- MVP3：预测/会商/预案、跨系统工作流、端到端测试集合
+
+## 6) 验证与落地
+- 验证点：数据绑定有效性、告警规则、巡查路线、隐患闭环、3D 渲染性能、报表正确性
+- 落地建议：对接监测数据源，逐步替换占位组件为真实数据绑定控件；上线回滚与变更管理
+
+## 7) 附录
+- 术语表、坐标系与地理信息标准参考
+
+(End of file)
