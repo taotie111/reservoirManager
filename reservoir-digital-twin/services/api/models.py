@@ -1,0 +1,12 @@
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, ForeignKey
+from sqlalchemy.orm import relationship
+from ..db.database import Base
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50), unique=True, nullable=False)
+    email = Column(String(120), nullable=True)
+    password_hash = Column(String(128), nullable=False)
+    role = Column(String(20), nullable=False)
+    created_at = Column(DateTime, nullable=True)

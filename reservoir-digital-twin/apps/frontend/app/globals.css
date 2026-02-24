@@ -1,0 +1,15 @@
+/* Tailwind removed: plain CSS resets implemented manually */
++:root {
+  --bg: #fff;
+  --text: #111;
+}
+html, body, #__next {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}

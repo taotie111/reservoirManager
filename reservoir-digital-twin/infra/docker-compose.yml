@@ -1,0 +1,60 @@
+version: '3.9'
+services:
+  db:
+    image: postgis/postgis:15-3
+    container_name: reservoir_db
+    environment:
+      POSTGRES_USER: reservoir
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: reservoir_db
+      POSTGRES_INITDB_ARGS: "--data-checksums"
+      # Enable PostGIS extension by default
+      POSTGRES_INITDB_WALDIR: "/var/lib/postgresql/wal"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: reservoir_redis
+    ports:
+      - "6379:6379"
+
+  api:
+    build:
+      context: ./services/api
+    container_name: reservoir_api
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgresql://reservoir:secret@db:5432/reservoir_db
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+
+  ml:
+    build:
+      context: ./services/ml
+    container_name: reservoir_ml
+    depends_on:
+      - api
+      - redis
+    environment:
+      DATABASE_URL: postgresql://reservoir:secret@db:5432/reservoir_db
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8001:8001"
+
+  frontend:
+    build:
+      context: ./apps/frontend
+    container_name: reservoir_frontend
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+volumes:
+  db_data:
+    driver: local

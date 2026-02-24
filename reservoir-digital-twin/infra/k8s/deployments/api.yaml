@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservoir-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservoir-api
+  template:
+    metadata:
+      labels:
+        app: reservoir-api
+    spec:
+      containers:
+        - name: reservoir-api
+          image: ghcr.io/your-org/reservoir-api:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: postgresql://reservoir:secret@db:5432/reservoir_db

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservoir-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservoir-frontend
+  template:
+    metadata:
+      labels:
+        app: reservoir-frontend
+    spec:
+      containers:
+        - name: reservoir-frontend
+          image: ghcr.io/your-org/reservoir-frontend:latest
+          ports:
+            - containerPort: 3000

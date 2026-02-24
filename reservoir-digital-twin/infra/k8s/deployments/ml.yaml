@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservoir-ml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservoir-ml
+  template:
+    metadata:
+      labels:
+        app: reservoir-ml
+    spec:
+      containers:
+        - name: reservoir-ml
+          image: ghcr.io/your-org/reservoir-ml:latest
+          ports:
+            - containerPort: 8001
