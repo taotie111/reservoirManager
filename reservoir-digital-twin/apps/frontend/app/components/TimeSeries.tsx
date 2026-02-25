@@ -1,11 +1,12 @@
 import React from 'react'
-import * as echarts from 'echarts'
+import TimeSeriesChart from './TimeSeriesChart'
 
-export default function TimeSeriesChart({ data }: { data: Array<{ t: string; v: number }> }) {
-  // Simple placeholder chart using a div; actual chart would be rendered with ECharts
+export default function TimeSeries({ data }: { data: Array<{ t: string; v: number }> }) {
+  // simple container with a lightweight sparkline chart
+  const chartData = data.map((d) => ({ t: d.t, v: d.v }))
   return (
-    <div style={{ height: 260, background: '#fff' }} aria-label="time-series-chart">
-      Time series chart placeholder
+    <div className="time-series-chart" aria-label="time-series-chart" style={{ padding: 8 }}>
+      <TimeSeriesChart data={chartData} />
     </div>
   )
 }

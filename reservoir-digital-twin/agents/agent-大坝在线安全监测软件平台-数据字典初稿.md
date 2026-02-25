@@ -1,4 +1,4 @@
-# 大坝在线安全监测软件平台 - 数据字典初稿 v0.2
+# 大坝在线安全监测软件平台 - 数据字典初稿 v0.3
 
 以下为核心实体的数据字典初稿，后续将扩展字段约束、索引、关系及业务规则。
 
@@ -135,5 +135,91 @@
 - permissions: JSON
 
 > 说明：此数据字典初稿以核心实体为主，后续将逐步形成字段约束、索引与关系等的详细信息。
+
+## 16) Frontend/UI 映射字段
+
+### 16.1 通用 UI 字段
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| displayName | string | UI 展示的友好名称 |
+| uiColor | string | 卡片、图表、点位的颜色 |
+| isActive | boolean | 是否激活显示 |
+| lastValue | number | 来自 Timeseries 的最近值 |
+| coordinatesFormat | string | 坐标展示格式 |
+
+### 16.2 前端组件映射
+
+#### Dam 实体前端映射
+```
+Dam 列表页卡片显示：
+- name (displayName) -> 卡片标题
+- damId -> 坝体编号
+- location -> 地理位置（CGCS2000 格式化显示）
+- type -> 水库类型
+- status -> 运行状态（对应 badge 颜色）
+```
+
+#### MonitoringPoint 实体前端映射
+```
+监测点卡片显示：
+- name -> 点位名称
+- pointType -> 点位类型
+- lastValue -> 当前值 + 单位
+- status -> 状态 badge
+- sensorId -> 关联传感器
+```
+
+#### Alarm 实体前端映射
+```
+告警列表显示：
+- level -> 告警级别（critical/warning/info）
+- message -> 告警消息
+- damId -> 关联水库
+- pointId -> 关联监测点
+- createdAt -> 告警时间
+- status -> 处理状态
+```
+
+### 16.3 状态映射表
+
+#### Dam Status 映射
+| 后端值 | 前端显示 | Badge 样式 |
+|--------|----------|------------|
+| 正常 | 正常 | badge-success |
+| 运行中 | 运行中 | badge-success |
+| 维护中 | 维护中 | badge-warning |
+| 异常 | 异常 | badge-error |
+
+#### Alarm Level 映射
+| 后端值 | 前端显示 | Badge 样式 |
+|--------|----------|------------|
+| critical | 紧急 | badge-error |
+| warning | 警告 | badge-warning |
+| info | 提示 | badge-success |
+
+### 16.4 坐标系显示规范
+- 存储格式：GEOMETRY(POINT, CGCS2000)
+- 前端显示：经度.toFixed(4) + "°, " + 纬度.toFixed(4) + "°"
+- 示例：102.0000°, 30.0000°
+
+## 17) API 端点与数据流
+
+### 17.1 前端 API 路由
+```
+GET  /api/dams           -> 获取水库列表
+GET  /api/dams/[id]      -> 获取水库详情
+GET  /api/monitoringPoints -> 获取监测点列表
+GET  /api/timeseries     -> 获取时序数据
+GET  /api/alerts         -> 获取告警列表
+```
+
+### 17.2 数据流向
+```
+后端数据库 -> API 路由 -> 前端 SWR/Fetch -> UI 组件
+                                    ↓
+                              状态管理 (Zustand)
+                                    ↓
+                              本地缓存 / LocalStorage
+```
 
 (End of file)

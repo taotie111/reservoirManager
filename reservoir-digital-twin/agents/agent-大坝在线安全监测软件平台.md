@@ -31,4 +31,76 @@
 ## 7) 附录
 - 术语表、坐标系与地理信息标准参考
 
+## 8) Frontend 实现计划（Next.js MVP 版本）
+
+### 8.1 技术栈
+- 前端框架：Next.js 14 (App Router)
+- 开发语言：TypeScript
+- 样式方案：纯 CSS + CSS Variables（支持 Light/Dark 主题）
+- 状态管理：Zustand
+- 数据请求：SWR + Fetch
+- 图表库：ECharts / 自定义 SVG 图表
+- 地图/3D：CesiumJS / Three.js（预留占位）
+
+### 8.2 页面结构
+```
+app/
+├── layout.tsx              # 根布局（App Shell）
+├── components/
+│   ├── Sidebar.tsx        # 左侧导航栏
+│   ├── Header.tsx          # 顶部栏
+│   ├── ThemeToggle.tsx    # 主题切换
+│   ├── Card.tsx           # 卡片组件
+│   └── TimeSeriesChart.tsx # 时序图表
+├── styles/
+│   └── ui.css             # 全局样式系统
+├── dams/
+│   ├── page.tsx           # 水库大坝列表
+│   └── [damId]/page.tsx  # 水库详情
+├── dashboard/page.tsx     # 数据看板
+├── alerts/page.tsx        # 告警中心
+├── forecasts/page.tsx     # 预测分析
+├── admin/page.tsx         # 系统管理
+└── api/                   # API 路由
+```
+
+### 8.3 UI 设计系统
+
+#### 颜色主题（Light）
+- 主色：#2563eb（蓝色）
+- 背景：#f6f7fb
+- 卡片：#ffffff
+- 边框：#e5e7eb
+- 文字：#374151
+- 文字次要：#6b7280
+
+#### 颜色主题（Dark）
+- 背景：#0b1020
+- 卡片：#141a2b
+- 边框：#2f3656
+- 文字：#e5e7eb
+- 文字次要：#8b92a6
+
+#### 组件规范
+- 卡片圆角：12px
+- 按钮圆角：6-8px
+- 间距单位：4px 基础倍数
+- 阴影：柔和投影
+
+### 8.4 导航结构
+- 左侧 Sidebar：品牌区域 + 导航菜单
+  - 品牌：水库大坝安全监测 + 数字孪生平台
+  - 导航项：水库大坝、数据看板、告警中心、预测分析、系统管理
+- 顶部 Header：仅保留主题切换按钮
+
+### 8.5 数据契约
+- API 端点：/api/dams（GET）
+- 数据格式：JSON，与数据字典字段一致（camelCase）
+- 坐标系：CGCS2000
+
+### 8.6 里程碑
+- MVP1：完成基础框架、水库列表、主题切换
+- MVP2：数据看板、告警中心、预测分析页面
+- MVP3：3D 地图集成、实时数据绑定
+
 (End of file)

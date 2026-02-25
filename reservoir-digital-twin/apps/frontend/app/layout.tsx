@@ -1,12 +1,21 @@
 import React from 'react'
+import Header from './components/Header'
+import Sidebar from './components/Sidebar'
+import './styles/ui.css'
 import './globals.css'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <head />
-      <body className="min-h-screen bg-gray-50 text-gray-900">
-        {children}
+      <body style={{ minHeight: '100%' }}>
+        <div className="app-shell">
+          <Sidebar />
+          <div className="content-shell">
+            <Header />
+            <main className="main container">{children}</main>
+          </div>
+        </div>
       </body>
     </html>
   )
